@@ -1,0 +1,35 @@
+<!-- todo/templates/todo/task_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do Pending Items</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">To-Do Pending Tasks</h1>
+    <ul class="list-group">
+        {% for task in pending_tasks %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{% url 'mark_complete' task.id %}"><input type="checkbox" {% if task.completed %}checked{% endif %}></a>
+                    <span class="{% if task.completed %}text-muted{% endif %}">{{ task.title }}</span>
+                </div>
+                <span>
+                    <small class="text-muted">{{ task.pub_date }}</small>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'all_task_list' %}"><button type="button" class="mt-3 btn btn-sm btn-info">All Tasks</button></a>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
