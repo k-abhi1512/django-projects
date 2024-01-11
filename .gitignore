@@ -1,2 +1,5 @@
 /.venv
 /todoAppProject
+
+
+*/__pycache__
