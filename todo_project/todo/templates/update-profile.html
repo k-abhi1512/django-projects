@@ -1,0 +1,87 @@
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Update Profile{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Update Profile</h2>
+                </div>
+                <div class="col-md-6 d-flex float-right">
+                    <a href="{% url 'password_reset' %}"><button type="button" class="btn btn-xs btn-warning">Change Password</button></a>
+                </div>
+            </div>
+            
+            {% if user_form.errors %}
+                <div class="alert alert-danger">
+                <strong>Error:</strong> There are errors in the form.
+                <ul>
+                    {% for field_name, field_errors in user_form.errors.items %}
+                    <li><strong>{{ field_name|title }}:</strong>
+                        <ul>
+                        {% for error in field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+                </div>
+            {% elif form_submitted %}
+                <div class="alert alert-success">
+                <strong>Success:</strong> The updated successfully.
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label for="{{ user_form.user_name.id_for_label }}" class="col-sm-2 col-form-label">Username:</label>
+                            <div class="col-sm-10">
+                                {{ user_form.user_name }}
+                              <small id="titleHelp" class="form-text text-muted">Enter a suitable username.</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="{{ user_form.profile_picture.id_for_label }}" class="col-sm-2 col-form-label">Profile Picture:</label>
+                            <div class="col-sm-10">
+                                {{ user_form.profile_picture }}
+                              <small id="titleHelp" class="form-text text-muted">Upload a suitable profile picture.</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="{{ user_form.bio.id_for_label }}" class="col-sm-2 col-form-label">Bio:</label>
+                            <div class="col-sm-10">
+                                <textarea name="{{ user_form.bio.name }}" rows="3">{{ user_form.bio.value }}</textarea>
+                              <small id="titleHelp" class="form-text text-muted">Add about you in breief.</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6 offset-sm-2">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                            <div class="col-sm-6 mt-4 float-right">
+                                <a href="{% url 'profile' %}"><button type="button" class="btn btn-sm btn-warning"><span class="mr-3"><i class="fa fa-angle-double-left"></i></span>Go To Profile</button></a>
+                              </div>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                
+{% endblock %}

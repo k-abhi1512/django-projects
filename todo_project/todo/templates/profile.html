@@ -1,0 +1,48 @@
+
+
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}User Profile{% endblock %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <h1 class="mb-4">User Profile</h1>
+    <div class="card-body">
+        <div class="container mt-5">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>{{ user_data.user_name }}'s Profile</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'update_profile' %}"><button type="button" class="btn btn-sm btn-primary float-right"><span><i class="fa fa-edit mr-3"></i></span> Update Profile</button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        Profile Picture: 
+                        {% if user_data.profile_picture %}
+                            <img src="{{ user_data.profile_picture.url }}" class="img-fluid rounded-circle" height="100px" width="100px" alt="Profile Picture">
+                        {% else %}
+                            <!-- Default image or placeholder if the profile picture is not available -->
+                            <img src="{% static '../media/uploads/django-icon.png' %}" class="img-fluid rounded-circle" height="100px" width="100px" alt="Default Profile Picture">
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-4 mt-4">
+                        Username: {{ user_data.user_name }}
+                    </div>
+
+                    <div class="col-md-4 mt-4">
+                        <h3>BIO: </h3>{{ user_data.bio }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+                
+{% endblock %}

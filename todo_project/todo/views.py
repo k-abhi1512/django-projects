@@ -1,6 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task
-from .forms import TaskForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+
+from .models import (
+    Task,
+    UserProfile,
+)
+from .forms import (
+    TaskForm, 
+    UserProfileForm
+)
 
 # Create your views here.
 
@@ -73,3 +82,44 @@ def task_delete(request, id):
     except:
         pass
     return redirect('all_task_list')
+
+
+def login(request):
+    return HttpResponse("Please log in to app.")
+
+@login_required(login_url='/login/')
+def profile(request):
+    user = request.user
+
+    try:
+        user_data = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        return HttpResponse("UserProfile not found for the current user.")
+
+    context = {
+        'user_data': user_data
+    }
+    return render(request, 'profile.html', context=context)
+
+
+@login_required
+def update_profile(request):
+    user = request.user
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    form_submitted = False
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if user_form.is_valid():
+            user_form.save()
+            form_submitted = True
+    else:
+        user_form = UserProfileForm(instance=user_profile)
+        form_submitted = False
+
+    context = {
+            'user_form': user_form, 
+            'user': user,
+            'form_submitted': form_submitted
+        }
+    return render(request, 'update-profile.html', context=context)
+

@@ -1,12 +1,17 @@
 # todo/urls.py
 from django.urls import path
+from django.contrib.auth import views as auth_views
+
 from .views import (
     pending_task_list,
     all_task_list, 
     mark_complete,
     task_create,
     task_update,
-    task_delete
+    task_delete,
+    profile,
+    update_profile,
+    login,
 
 )
 
@@ -17,4 +22,11 @@ urlpatterns = [
     path('task-create', task_create, name='task_create'),
     path('task-update/<int:id>', task_update, name='task_update'),
     path('task-delete/<int:id>', task_delete, name='task_delete'),
+    path('user-profile/', profile, name='profile'),
+    path('update-profile/', update_profile, name='update_profile'),
+    path('login/', login, name="login"),
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
