@@ -6,3 +6,10 @@ __pycache__/
 
 # Ignore Django migrations
 **/migrations/
+
+.DS_Store/
+
+*.png
+*.jpg
+*.gif
+*.bmp
