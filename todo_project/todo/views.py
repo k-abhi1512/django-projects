@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
+from .forms import TaskForm
 
 # Create your views here.
 
@@ -10,7 +11,8 @@ def pending_task_list(request):
 
 def all_task_list(request):
     tasks = Task.objects.all()
-    return render(request, 'task_list.html', {'tasks': tasks})
+    context = {'tasks': tasks}
+    return render(request, 'task_list.html', context=context)
 
 
 def mark_complete(request, task_id):
@@ -26,3 +28,48 @@ def mark_complete(request, task_id):
         return redirect('all_task_list')
     else:
         return redirect('pending_task_list')
+    
+
+def task_create(request):  
+    if request.method == "POST":  
+        import pdb
+        pdb.set_trace()
+        task_form = TaskForm(request.POST, request.FILES)  
+        if task_form.is_valid():  
+            try:  
+                task_form.save() 
+                model = task_form.instance
+                form_submitted = True
+            except:  
+                form_submitted = False
+        else:
+            form_submitted = False
+    else:  
+        task_form = TaskForm()
+        form_submitted = False
+    return render(request,'create-task.html',{'task_form':task_form, 'form_submitted':form_submitted}) 
+
+
+
+def task_update(request, id):
+    task = get_object_or_404(Task, pk=id)
+    form_submitted = False
+
+    if request.method == 'POST':
+        task_form = TaskForm(request.POST, instance=task)
+        if task_form.is_valid():
+            task_form.save()
+            form_submitted = True
+    else:
+        task_form = TaskForm(instance=task)
+
+    return render(request, 'update-task.html', {'task_form': task_form, 'form_submitted': form_submitted})
+
+
+def task_delete(request, id):
+    task = Task.objects.get(id=id)
+    try:
+        task.delete()
+    except:
+        pass
+    return redirect('all_task_list')
