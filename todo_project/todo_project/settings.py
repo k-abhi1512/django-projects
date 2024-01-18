@@ -132,3 +132,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kumarabhii1421@gmail.com'  # Replace with your Gmail email
 EMAIL_HOST_PASSWORD = 'your password'
+
+LOGIN_REDIRECT_URL = '/'
+
+# Specify the message storage backend
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"

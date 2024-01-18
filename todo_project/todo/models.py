@@ -8,10 +8,10 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     deadline = models.DateTimeField()
     file = models.FileField(upload_to='uploads/')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
 
     def __str__(self):
         return self.title
-    
 
 
 class UserProfile(models.Model):
